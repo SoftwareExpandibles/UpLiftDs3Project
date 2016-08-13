@@ -1,0 +1,47 @@
+﻿@using Myuken.Models
+@{
+    ViewBag.Title = "Sales Charted";
+    var myList = ViewBag.Sales;
+    var db =myList;
+    var data = db;
+    List<string> days = new List<string>();
+    List<string> orders = new List<string>();
+    foreach (DailyOrderCounter item in db)
+    {
+        days.Add(item.DatedRecord.ToString());
+        orders.Add(item.OrdersInADay.ToString());
+    }
+    var myChart = new Chart(width: 600, height: 400,theme:ChartTheme.Green)
+        .AddTitle("DailySales")
+        .AddLegend(title:"Orders",name:"Vertical")
+        .DataBindCrossTable(dataSource:data,groupByField: "OrdersInADay", xField: "DatedRecord",yFields: "OrdersInADay")
+        .Write();
+}
+
+
+
+@*var db = Database.Open("DefaultConnection");
+    var data = db.Query("SELECT OrdersInADay, DailySales FROM DailyOrderCounter");
+    var myChart = new Chart(width: 600, height: 400)
+        .AddTitle("DailySales")
+        .DataBindTable(dataSource: data, xField: "OrdersInADay")
+        .Write();
+    var myChart = new Chart(width: 600, height: 400)
+       .AddTitle("Chart Title")
+       .AddSeries(
+           name: "Employee",
+           xValue: new[] {  "Peter", "Andrew", "Julie", "Mary", "Dave" },
+           yValues: new[] { "2", "6", "4", "5", "3" })
+       .Write();
+
+    works but is weird
+
+    var myList = ViewBag.Sales;
+    var db =myList;
+    var data = db;
+    var myChart = new Chart(width: 600, height: 400)
+        .AddTitle("DailySales")
+        .DataBindTable(dataSource: data, xField : "OrdersInADay")
+        .Write();
+
+*@

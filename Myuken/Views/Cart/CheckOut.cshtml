@@ -1,0 +1,45 @@
+﻿@using Myuken.Models
+@{
+    ViewBag.Title = "CheckOut";
+}
+    @try
+    {
+        if ((Order)Session["Order"] != null)
+        {
+            Order ap;
+            ap = (Order)Session["Order"];
+
+            <ng-form>
+                <ion-nav-title>@ap.OrderTitle</ion-nav-title>
+                <table cellpadding="1" cellspacing="2" class="table table-striped">
+                    <tr>
+                        <th>Name</th>
+                        <th>Photo</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Amount</th>
+                    </tr>
+                    @foreach (Item cad in ap.CartItems)
+                    {
+                        <tr>
+                            <td>@cad.Product.ProductName</td>
+                            <td><img src="/Products/RetrieveImage/@cad.Product.ProductId" alt="" height=150 width=150 class="thumbnail" /></td>
+                            <td>R @cad.Product.SellingPrice</td>
+                            <td>@cad.Quantity</td>
+                            <td>R @cad.Amount()</td>
+                        </tr>
+                    }
+                </table>
+                <p>SubTotal: @ap.SubTotal.ToString("R0.00")</p>
+                <p>VAT: @ap.Vat.ToString("R0.00")</p>
+                <p>Total Amount: @ap.Total.ToString("R0.00")</p>
+                <a href="https://www.payfast.co.za/eng/process?cmd=_paynow&amp;receiver=siyabongashebi%40outlook.com&amp;item_name=@ap.OrderTitle&amp;amount=@Convert.ToDouble(ap.Total)"><img src="https://www.payfast.co.za/images/buttons/buynow_basic_logo.gif" width="95" height="57" alt="Buy" title="Buy Now with PayFast" /></a>
+
+            </ng-form>
+        }
+    }
+
+    catch
+    {
+<p>There is no Orders</p> 
+}  

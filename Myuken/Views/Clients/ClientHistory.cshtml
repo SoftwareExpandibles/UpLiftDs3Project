@@ -1,0 +1,54 @@
+﻿@model Myuken.Models.Order
+@using Myuken.Models
+
+@{
+    ViewBag.Title = "ClientHistory";
+}
+@if ((Client)Session["Client"]!=null)
+{
+    Client dap = (Client)Session["Client"];
+    <h2>@dap.FullName</h2>
+    try
+    {<h3>Order History</h3>
+        if ((List<Order>)Session["Orders"] != null)
+        {
+            List<Order> lop = (List<Order>)Session["Orders"];
+            foreach (Order ap in lop)
+            {
+    <ng-form>
+        <ion-nav-title>@ap.OrderTitle</ion-nav-title>
+        <table cellpadding="1" cellspacing="2" class="table table-striped">
+            <tr>
+                <th>Name</th>
+                <th>Photo</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Amount</th>
+            </tr>
+            @for (int i=0;i<(ap.CartItems.Count/2);i++)
+            {
+                <tr>
+                    <td>@ap.CartItems[i].Product.ProductName</td>
+                    <td><img src="/Products/RetrieveImage/@ap.CartItems[i].Product.ProductId" alt="" height=150 width=150 class="thumbnail" /></td>
+                    <td>R @ap.CartItems[i].Product.SellingPrice</td>
+                    <td>@ap.CartItems[i].Quantity</td>
+                    <td>R @ap.CartItems[i].Amount()</td>
+                </tr>
+               
+            }
+        </table>
+        <p>SubTotal: @ap.SubTotal.ToString("R0.00")</p>
+        <p>VAT: @ap.Vat.ToString("R0.00")</p>
+        <p>Total Amount: @ap.Total.ToString("R0.00")</p>
+        <a href="https://www.payfast.co.za/eng/process?cmd=_paynow&amp;receiver=siyabongashebi%40outlook.com&amp;item_name=@ap.OrderTitle&amp;amount=@Convert.ToDouble(ap.Total)"><img src="https://www.payfast.co.za/images/buttons/buynow_basic_logo.gif" width="95" height="57" alt="Buy" title="Buy Now with PayFast" /></a>
+
+    </ng-form><br />
+            }
+        }
+    }
+    catch
+    {
+        <h3>There is no Order History</h3>
+    }
+}
+

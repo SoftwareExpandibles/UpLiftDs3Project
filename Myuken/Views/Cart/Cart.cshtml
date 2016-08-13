@@ -1,0 +1,73 @@
+﻿@using Myuken.Models
+<h2 style="text-align:center">Your Cart</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            Optional
+        </th>
+        <th>
+            ID
+        </th>
+        <th>
+            Name
+        </th>
+        <th>
+            Photo
+        </th>
+        <th>
+            Price
+        </th>
+        <th>
+            Quantity
+        </th>
+        <th>
+            Subtotal
+        </th>
+    </tr>
+    @if (Session.Count > -1)
+    {
+        decimal s;
+        s = 0;
+        try
+        {
+            foreach (Item item in (List<Item>)Session["cart"])
+            {
+                s += item.Amount();
+                <tr>
+                    <td>@Html.ActionLink("Remove Item", "Delete", "Cart", new { id = item.Product.ProductId }, null)</td>
+                    <td>@item.ItemId</td>
+                    <td>@item.Product.ProductName</td>
+                    <td>
+                    <img src="/Products/RetrieveImage/@item.Product.ProductId" alt="" height=150 width=150 class="thumbnail" />
+                    </td>
+                    <td>R @item.Product.SellingPrice</td>
+                    <td>@item.Quantity</td>
+                    <td>R @item.Amount()</td>
+                </tr>
+            }
+    }
+        catch (Exception)
+        {
+            <tr><td><strong>YOUR CART IS EMPTY!</strong> </td></tr>
+        }
+        <tr>
+            <th align="right" colspan="5">Sum</th>
+            <td>R @s</td>
+        </tr>
+    }
+    <tr>
+        <td>
+            @if (Session.Count == -1)
+            {
+                @Html.Display(Session["cart"].ToString());
+            }
+        </td>
+    </tr>
+</table>
+<p style="text-align:center">
+    @Html.ActionLink("Continue Shopping", "Index", "Catalog")
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    @Html.ActionLink("Check Out", "CheckOut", "Cart")
+</p>

@@ -1,0 +1,26 @@
+﻿@using Myuken.Models
+
+<h2>Index</h2>
+
+<form>
+    <div class="modal-body">
+        <table>
+            <tr>
+                <th>Picture</th>
+                <th>Product Name</th>
+                <th>Genre</th>
+                <th>Price</th>
+            </tr>
+                @foreach (Product item in ViewBag.Products)
+                {
+                    <tr>
+                        <td><img src="/Products/RetrieveImage/@item.ProductId" alt="" height=150 width=150 class="thumbnail" /></td>
+                        <td>@item.ProductName</td>
+                        <td>@item.Genre</td>
+                        <td>@item.SellingPrice</td>
+                        <td>@Html.ActionLink("Add To Cart", "Buy", new { id = item.ProductId })</td>
+                    </tr>
+                }
+        </table>
+    </div>
+</form>
